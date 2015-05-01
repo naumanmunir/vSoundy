@@ -1,0 +1,112 @@
+package adapter;
+
+
+
+public class GridAdapter extends BaseAdapter {
+
+    private Context mContext;
+    int[] buttonImages;
+    String[] buttonLabels;
+    private static LayoutInflater inflater = null;
+    private ArrayList<Integer> mediaPlayer;
+    private Integer[] Sounds = {
+
+            R.raw.sounds
+    };
+    private MediaPlayer mp;
+
+    public GridAdapter(Context context, String[] btnLabels, int[] images) {
+
+        //Sounds = sounds;
+        buttonLabels = btnLabels;
+        buttonImages = images;
+        mContext = context;
+        inflater = (LayoutInflater) mContext
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public GridAdapter(MainActivity SBActivity, String[] btnLabels, int[] images) {
+
+        //Sounds = sounds;
+        buttonLabels = btnLabels;
+        buttonImages = images;
+        mContext = SBActivity;
+        inflater = (LayoutInflater) mContext
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public int getCount() {
+        return buttonLabels.length;
+
+    }
+
+    public Object getItem(int position) {
+        return position;
+    }
+
+    public long getItemId(int position) {
+        return position;
+    }
+
+    public class Holder
+    {
+        TextView textView;
+        ImageView imageView;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+
+        Holder holder = new Holder();
+         View gridView;
+
+
+
+        gridView = inflater.inflate(R.layout.grid_item, null);
+        holder.textView = (TextView) gridView.findViewById(R.id.buttonlabel);
+        holder.imageView = (ImageView) gridView.findViewById(R.id.imageView);
+
+        holder.textView.setText(buttonLabels[position]);
+        holder.imageView.setImageResource(buttonImages[position]);
+
+
+
+        gridView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //  Toast.makeText(De7katGrid.this, "" + position, Toast.LENGTH_SHORT).show();
+                stopPlaying();
+                mp = MediaPlayer.create(mContext, Sounds[position]);
+                mp.start();
+
+            }
+        });
+
+        return gridView;
+    }
+
+
+
+    private void stopPlaying() {
+        if (mp != null) {
+            mp.stop();
+            mp.release();
+            mp = null;
+
+        }
+    }
+
+    // references to our images
+    private Integer[] mThumbIds = {
+
+            R.drawable.button,R.drawable.button,
+            R.drawable.button,R.drawable.button,
+            R.drawable.button,R.drawable.button,
+            R.drawable.button,R.drawable.button
+
+    };
+
+    private String[] buttonValues = new String[] {
+            "Android", "iOS","Windows", "Blackberry" , "One", "Two", "Three", "Four"};
+}
